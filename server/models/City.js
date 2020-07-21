@@ -5,7 +5,10 @@ const citySchema = new Schema({
     name: String,
     temperature: Number,
     condition: String,
-    conditionPic: String
+    conditionPic: String,
+    sunrise: String,
+    sunset: String,
+    country: String,
 });
 
 const City = mongoose.model("City", citySchema);
