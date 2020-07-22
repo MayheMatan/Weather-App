@@ -10,10 +10,10 @@ const createCity = city => {
         temperature: Math.floor(city.main.temp - 273.15),
         condition: city.weather[0].main,
         conditionPic: city.weather[0].icon,
-        sunrise: moment(city.sys.sunrise).format("HH:mm"),
-        sunset: moment(city.sys.sunset).format("HH:mm"),
+        sunrise: moment.unix(city.sys.sunrise).local().format("HH:mm"),
+        sunset: moment.unix(city.sys.sunset).local().format("HH:mm"),
         country: city.sys.country,
-        updatedAt: city.dt
+        updatedAt: moment(city.dt).format("HH:mm:ss")
     }
 }
 
@@ -29,7 +29,6 @@ router.get("/cities", (req, res) => {
 });
 
 router.post("/city", (req, res) => {
-    console.log(req.body) //TODO: ADD ONLLY RELAVENT CITY DETAILES
     const newCity = new City(req.body);
     newCity.save();
     res.end()
@@ -43,7 +42,6 @@ router.delete("/city/:cityName", (req, res) => {
 router.put('/city/:cityName', async function(req, res) {
     const { cityName } = req.params
     const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=b4ff253ee2972c7a7db45a5679acb916`)
-    if (!response) { return res.send("0") }
     const city = new City(createCity(response.data))
     await City.deleteOne({ name: cityName })
     await city.save()

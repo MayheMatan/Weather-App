@@ -42,7 +42,7 @@ $("#results").on("click", ".remove-button", function() {
 })
 
 $("#results").on("click", ".refresh-button", async function() {
-    const cityName = $(this).closest(".last-update").siblings(".city-name").text()
+    const cityName = $(this).siblings(".left-content").find("p").text().split(',');
     await apiManager.updateCity(cityName)
     renderer.renderData(apiManager.cityData)
 });
